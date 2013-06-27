@@ -22,8 +22,49 @@ function detect_uri() {
 		$uri = substr($uri, strlen($_SERVER['SCRIPT_NAME']));
 	}
 
-	return $uri;
+	if ($uri == '/' || empty($uri)) {
+		return '/';
+	}
+
+	$uri = parse_url($uri, PHP_URL_PATH);
+
+	// 将路径中的 '//' 或 '../' 等进行清理
+	return str_replace(array('//', '../'), '/', trim($uri, '/'));
 }
 
+$uri = detect_uri();
+// echo $uri;
 
-echo detect_uri();
+
+function explode_uri($uri) {
+
+	foreach (explode('/', preg_replace("|/*(.+?)/*$|", "\\1", $uri)) as $val) {
+		$val = trim($val);
+		if ($val != '') {
+			$segments[] = $val;
+		}
+	}
+
+	return $segments;
+}
+
+$uri_segments = explode_uri($uri);
+// print_r($uri_segments);
+
+// 获取要调用的类和方法
+$class = $uri_segments[0];
+$method = $uri_segments[1];
+
+
+
+// 调用类和方法
+$CI = new $class();
+
+$CI->$method();
+
+class Welcome {
+
+	function hello() {
+		echo 'My first Php Framework!';
+	}
+}
