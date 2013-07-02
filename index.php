@@ -52,19 +52,50 @@ $uri_segments = explode_uri($uri);
 // print_r($uri_segments);
 
 // 获取要调用的类和方法
-$class = $uri_segments[0];
-$method = $uri_segments[1];
+$class = '';
+$method = '';
+$rsegments = array();
+
+include('routes.php');
 
 
+function parse_routes() {
+	global $uri_segments, $routes, $rsegments;
 
-// 调用类和方法
+	$uri = implode('/', $uri_segments);	
+
+	if (isset($routes[$uri])) {
+		$rsegments = explode('/', $routes[$uri]);
+
+		return set_request($rsegments);		
+	}
+}
+
+function set_request($segments = array()) {
+	global $class, $method;
+
+	$class = $segments[0];
+
+	if (isset($segments[1])) {
+		$method = $segments[1];
+	} else {
+		$method = 'index';
+	}
+}
+
+parse_routes();
+
 $CI = new $class();
 
-$CI->$method();
+call_user_func_array(array(&$CI, $method), array_slice($rsegments, 2));
 
 class Welcome {
 
 	function hello() {
 		echo 'My first Php Framework!';
+	}
+
+	function saysomething($str) {
+		echo $str.", I'am the php framework you created!";
 	}
 }
