@@ -2,13 +2,10 @@
 /**
  * 框架主入口文件，所有的页面请求均定为到该页面，并根据 url 地址来确定调用合适的方法并显示输出
  */
-require 'Router.php';
-require 'URI.php';
+require('Common.php');
 
-
-$URI = new CI_URI();
-
-$RTR = new CI_Router();
+$URI =& load_class('URI');
+$RTR =& load_class('Router');
 
 $RTR->set_routing();
 

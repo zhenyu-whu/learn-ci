@@ -13,9 +13,7 @@ class CI_Router {
 	var $default_controller;
 
 	function __construct() {
-		global $URI;
-
-		$this->uri = &$URI;
+		$this->uri =& load_class('URI');
 	}
 
 	function set_routing() {
