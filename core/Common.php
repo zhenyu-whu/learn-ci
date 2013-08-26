@@ -36,3 +36,24 @@ function is_loaded($class = '') {
 
 	return $_is_loaded;
 }
+
+// 简单模拟一些常用的函数，以免出错
+function config_item($item) {
+
+	static $_config_item = array('subclass_prefix' => 'MY_');
+
+	return $_config_item[$item];
+
+}
+
+function show_error($message, $status_code = 500, $heading = 'An Error Was Encountered') {
+	exit;
+}
+
+function show_404($page = '', $log_error = TRUE) {
+	exit;
+}
+
+function log_message($level = 'error', $message, $php_error = FALSE) {
+	return;
+}

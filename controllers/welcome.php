@@ -7,10 +7,13 @@ class welcome extends CI_Controller {
 	}
 
 	function saysomething($str) {
-		$this->load->model('test_model');
 
-		$info = $this->test_model->get_test_data();
+		$this->load->library('email');
 
-		echo $info;
+		$info = $this->email->test();
+
+		$data['info'] = $info;
+
+		$this->load->view('test_view', $data);
 	}
 }
